@@ -1,4 +1,42 @@
 # Paranuara Challenge
+
+## Solution and How to Test
+The program is written in Python and uses Flask. It can be
+tested on any server where Python 3 and Flask are installed.
+
+### Steps to install and run the API
+-   Copy these files into the same directory
+    -   paranuara.py
+    -   companies.json
+    -   people.json   
+- Check Python version
+    - $ python --version
+        - Python 3.7.4
+- Check Flash version
+    - python
+        - \>>> import pkg_resources
+        - \>>> pkg_resources.get_distribution('flask').version
+            - '1.1.1'
+- Run the API
+    - python paranuara.py
+         * Serving Flask app "paranuara" (lazy loading)
+         * Environment: production
+           WARNING: This is a development server. Do not use it in a production deployment.
+           Use a production WSGI server instead.
+         * Debug mode: off
+         * Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
+
+### Call the API to get outputs
+- Get all employees in a specified company
+    - curl http://127.0.0.1:8080/companyName/LINGOAGE
+- Find common friends between two people
+    - curl http://127.0.0.1:8080/persons/Lila%20Gray,Elinor%20Wiggins
+        - Note: Comma separated names. Spaces in names must be encoded as %20    
+- Find favourite foods of a specified person
+    - curl http://127.0.0.1:8080/favouriteFoods/Booth%20Haynes
+    
+# Project specifications
+        
 Paranuara is a class-m planet. Those types of planets can support human life, for that reason the president of the Checktoporov decides to send some people to colonise this new planet and
 reduce the number of people in their own country. After 10 years, the new president wants to know how the new colony is growing, and wants some information about his citizens. Hence he hired you to build a rest API to provide the desired information.
 
