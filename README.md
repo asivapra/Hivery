@@ -1,8 +1,16 @@
 # Paranuara Challenge
 
 ## Solution and How to Test
-The program is written in Python and uses Flask. It can be
-tested on any server where Python 3 and Flask are installed.
+The program is written in Python3 and uses Flask. It can be
+tested on any server where Python3 and Flask are installed.
+
+The API will listen on port 8080. Must make sure that this port is available. 
+If not, make a change in the code as below.
+
+- paranuara.py
+    - if \__name\__ == '\__main\__':
+        - app.run(port=**8080**)
+
 
 ### Steps to install and run the API
 -   Copy these files into the same directory
