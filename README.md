@@ -13,12 +13,12 @@ tested on any server where Python 3 and Flask are installed.
     - $ python --version
         - Python 3.7.4
 - Check Flash version
-    - python
+    - $ python
         - \>>> import pkg_resources
         - \>>> pkg_resources.get_distribution('flask').version
             - '1.1.1'
 - Run the API
-    - python paranuara.py
+    - $ python paranuara.py&
          * Serving Flask app "paranuara" (lazy loading)
          * Environment: production
            WARNING: This is a development server. Do not use it in a production deployment.
