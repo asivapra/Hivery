@@ -1,5 +1,7 @@
 """
 Paranuara Challenge
+Created by: Dr. Arapaut V. Sivaprasad on 17 May, 2020
+Last modified on: 18 May, 2020
 
 Your API must provides these end points:
 
@@ -47,9 +49,9 @@ app = Flask(__name__)
 # Given a company, the API needs to return all their employees.
 # Provide the appropriate solution if the company does not have any employees.
 # Example Usage: curl http://127.0.0.1:8080/companyName/LINGOAGE
-# Example Usage: curl http://127.0.0.1:8080/companyName/LINGOAGE_MISSING # No company
-# Example Usage: curl http://127.0.0.1:8080/companyName/BOVIS	# No employees.
-# After editing people.json to change all 'company_id: 13' to 'company_id: 130'
+# Example Usage: curl http://127.0.0.1:8080/companyName/LINGOAGE_NOTEXIST # No company exists
+# Example Usage: curl http://127.0.0.1:8080/companyName/BOVIS	# No employees in the company.
+#   After editing people.json to change all 'company_id: 13' to 'company_id: 130'
 
 
 @app.route("/companyName/<name>", methods=["GET"])
@@ -163,6 +165,17 @@ def getFavouriteFoods(name):
             person_details['fruits'] = fav_fruits
             person_details['vegetables'] = fav_vegis
             break
+    # If the person is not found, say 'Not Found'
+    keys = person_details.keys()
+    try:
+        if len(person_details.keys()) == 0:
+            person_details[name] = "Not Found"
+        if 'fruits' not in keys:
+            person_details['fruits'] = "Not Found"
+        if 'vegetables' not in keys:
+            person_details['vegetables'] = "Not Found"
+    except Exception as e:
+        print("Error:", e)
     return person_details
 
 
