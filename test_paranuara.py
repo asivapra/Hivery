@@ -1,9 +1,23 @@
+"""
+Unit test for 'paranuara.py'
+
+Five tests:
+    1. List all employees in a specified company
+    2. Say 'Company is not found' if not found in 'companies.json'
+    3. Say 'Company has no employees', if this company ID is not in 'people.json.
+    4. List two persons (name, age, address, phone) and their common friends (name, age, address, phone)
+    5. List the favourite fruits of one person as (username, age, fruits, vegetables)
+"""
 import unittest
 import os
 
 
 class MyTestCase(unittest.TestCase):
     def test_companyName(self):
+        """
+        List all employees in a specified company.
+        :return: List of names as a JSON object
+        """
         stream = os.popen('curl -s curl http://127.0.0.1:8080/companyName/LINGOAGE')
         output = stream.read()
         stream.close()
@@ -13,6 +27,10 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(output, exp_output)
 
     def test_companyNameNotExits(self):
+        """
+        Say 'Company is not found' if not found in 'companies.json'
+        :return: "Company is not found" as a string
+        """
         stream = os.popen('curl -s curl http://127.0.0.1:8080/companyName/LINGOAGE_NOTEXIST')
         output = stream.read()
         stream.close()
@@ -21,14 +39,22 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(output, exp_output)
 
     def test_companyHasNoEmployees(self):
+        """
+        Say 'Company has no employees', if this company ID is not in 'people.json.
+        :return: "Company has no employees" as a string
+        """
         stream = os.popen('curl -s curl curl http://127.0.0.1:8080/companyName/BOVIS')
         output = stream.read()
         stream.close()
-        print("Test3: No employees in company, BOVIS:", output)
         exp_output = '\"Company has no employees\"\n'
         self.assertEqual(output, exp_output)
+        print("Test3: No employees in company, BOVIS:", output)
 
     def test_persons(self):
+        """
+        List two persons (name, age, address, phone) and their common friends (name, age, address, phone)
+        :return: Details as a JSON object of two persons and their common friends.
+        """
         stream = os.popen('curl -s http://127.0.0.1:8080/persons/Lila%20Gray,Elinor%20Wiggins')
         output = stream.read()
         stream.close()
@@ -45,6 +71,10 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(output, exp_output)
 
     def test_favouriteFoods(self):
+        """
+        List the favourite fruits of one person as (username, age, fruits, vegetables)
+        :return: Details as a JSON object of one person and their favourite fruits and vegetables
+        """
         stream = os.popen('curl -s http://127.0.0.1:8080/favouriteFoods/Booth%20Haynes')
         output = stream.read()
         stream.close()
