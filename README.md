@@ -27,12 +27,9 @@ If not, make a change in the code as below.
             - '1.1.1'
 - Run the API
     - $ python paranuara.py&
-         * Serving Flask app "paranuara" (lazy loading)
-         * Environment: production
-           WARNING: This is a development server. Do not use it in a production deployment.
-           Use a production WSGI server instead.
-         * Debug mode: off
-         * Running on http://127.0.0.1:8080/ (Press CTRL+C to quit)
+
+- Unit Testing
+    - python test_paranuara.py
 
 ### Call the API to get outputs
 - Get all employees in a specified company
@@ -42,7 +39,7 @@ If not, make a change in the code as below.
         - Note: Comma separated names. Spaces in names must be encoded as %20    
 - Find favourite foods of a specified person
     - curl http://127.0.0.1:8080/favouriteFoods/Booth%20Haynes
-    
+#    
 # Project specifications
         
 Paranuara is a class-m planet. Those types of planets can support human life, for that reason the president of the Checktoporov decides to send some people to colonise this new planet and
