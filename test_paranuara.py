@@ -18,7 +18,7 @@ class MyTestCase(unittest.TestCase):
         List all employees in a specified company.
         :return: List of names as a JSON object
         """
-        stream = os.popen('curl -s curl http://127.0.0.1:8080/companyName/LINGOAGE')
+        stream = os.popen('curl -s http://127.0.0.1:8080/companyName/LINGOAGE')
         output = stream.read()
         stream.close()
         print("Test1: Employees in company, LINGOAGE:", output)
@@ -31,7 +31,7 @@ class MyTestCase(unittest.TestCase):
         Say 'Company is not found' if not found in 'companies.json'
         :return: "Company is not found" as a string
         """
-        stream = os.popen('curl -s curl http://127.0.0.1:8080/companyName/LINGOAGE_NOTEXIST')
+        stream = os.popen('curl -s http://127.0.0.1:8080/companyName/LINGOAGE_NOTEXIST')
         output = stream.read()
         stream.close()
         print("Test2: Non-existing company, LINGOAGE_NOTEXIST:", output)
@@ -43,7 +43,7 @@ class MyTestCase(unittest.TestCase):
         Say 'Company has no employees', if this company ID is not in 'people.json.
         :return: "Company has no employees" as a string
         """
-        stream = os.popen('curl -s curl curl http://127.0.0.1:8080/companyName/BOVIS')
+        stream = os.popen('curl -s http://127.0.0.1:8080/companyName/BOVIS')
         output = stream.read()
         stream.close()
         exp_output = '\"Company has no employees\"\n'
@@ -70,6 +70,30 @@ class MyTestCase(unittest.TestCase):
                      '{"phone":"+1 (862) 503-2197"}]]}]\n'
         self.assertEqual(output, exp_output)
 
+    def test_persons_one(self):
+        """
+        Send only one name
+        :return: Error.
+        """
+        stream = os.popen('curl -s http://127.0.0.1:8080/persons/Lila%20Gray')
+        output = stream.read()
+        stream.close()
+        print("Test5: Sending only one person, Lila Gray:", output)
+        exp_output = 'Error: Exactly two names must be given.\n'
+        self.assertEqual(output, exp_output)
+
+    def test_persons_nonexisting(self):
+        """
+        Send only one name
+        :return: Error.
+        """
+        stream = os.popen('curl -s http://127.0.0.1:8080/persons/Lila%20Gray,Elinor%20WigginsBlah')
+        output = stream.read()
+        stream.close()
+        print("Test6: One person is missing:", output)
+        exp_output = 'Error: One/nil person was found.\n'
+        self.assertEqual(output, exp_output)
+
     def test_favouriteFoods(self):
         """
         List the favourite fruits of one person as (username, age, fruits, vegetables)
@@ -78,9 +102,21 @@ class MyTestCase(unittest.TestCase):
         stream = os.popen('curl -s http://127.0.0.1:8080/favouriteFoods/Booth%20Haynes')
         output = stream.read()
         stream.close()
-        print("Test5: Favourite fruits and vegetables of a person, Booth Haynes:", output)
+        print("Test7: Favourite fruits and vegetables of a person, Booth Haynes:", output)
         exp_output = '{"age":46,"fruits":["apple","strawberry"],"username":"Booth Haynes",' \
                      '"vegetables":["cucumber","carrot"]}\n'
+        self.assertEqual(output, exp_output)
+
+    def test_favouriteFoodsNouser(self):
+        """
+        List the favourite fruits of one person as (username, age, fruits, vegetables)
+        :return: Details as a JSON object of one person and their favourite fruits and vegetables
+        """
+        stream = os.popen('curl -s http://127.0.0.1:8080/favouriteFoods/Booth%20HaynesBlah')
+        output = stream.read()
+        stream.close()
+        print("Test8: Favourite fruits and vegetables of a person, Booth Haynes:", output)
+        exp_output = '{"Booth HaynesBlah":"Not Found"}\n'
         self.assertEqual(output, exp_output)
 
 

@@ -36,10 +36,10 @@ If not, make a change in the code as below.
 - Get all employees in a specified company
     - curl http://127.0.0.1:8080/companyName/LINGOAGE
     - output: *["Sue Tyson","Hobbs Lang","Shelly Koch","Santiago Baker","Lolita Walls","Shari Farrell","Gordon Wolfe"]*
-- Get all employees in a non-existing company
+- Try to get all employees in a non-existing company
     - curl http://127.0.0.1:8080/companyName/LINGOAGE_NOTEXIST
     - output: *"Company is not found"*
-- Get all employees in a company that has no employees
+- Try to get all employees in a company that has no employees
     - curl http://127.0.0.1:8080/companyName/BOVIS
     - output: *"Company has no employees"*
     - Note: To do this test, the 'people.json' file had to be changed to replace all occurrences of '"company_id": 13' (index of BOVIS) to '"company_id": 130' 
@@ -50,6 +50,16 @@ If not, make a change in the code as below.
 - Find favourite foods of a specified person
     - curl http://127.0.0.1:8080/favouriteFoods/Booth%20Haynes
     - output: *{"age":46,"fruits":["apple","strawberry"],"username":"Booth Haynes","vegetables":["cucumber","carrot"]}*
+
+### Error Handling
+   - Typo in company name
+   - Typo in user name(s)
+   - Single user specified when two are required
+   - No 'favouriteFoods' for a user
+   - Additional fruits and vegetables
+    - These will not be reported.
+ 
+
 #    
 # Original Project specifications
         
