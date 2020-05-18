@@ -26,8 +26,8 @@ try:
     infile = 'companies.json'
     companies_json = open(infile)
 
-except FileNotFoundError as e:
-    print("Missing the company list.", e)
+except FileNotFoundError as e1:
+    print("Missing the company list.", e1)
     sys.exit()
 
 companies_dict = json.load(companies_json)
@@ -37,8 +37,8 @@ try:
     infile = 'people.json'
     people_json = open(infile)
 
-except FileNotFoundError as e:
-    print("Missing the people list.", e)
+except FileNotFoundError as e2:
+    print("Missing the people list.", e2)
     sys.exit()
 
 people_dict = json.load(people_json)
@@ -91,6 +91,11 @@ def getEmployees(idx):
 def getPersons(names):
     persons = []
     names = names.split(',')
+
+    # Check that two names are given as comma-separated.
+    if len(names) != 2:
+        return "Error: Exactly two names must be given.\n"
+
     for name in names:
         person_details = {}
         for j in range(len(people_dict)):
@@ -102,6 +107,11 @@ def getPersons(names):
                 person_details['friends'] = people_dict[j]['friends']
                 persons.append(person_details)
                 continue
+
+    # Check that two names have been retrieved
+    if len(persons) != 2:
+        return "Error: One/nil person was found.\n"
+
     common_friends = getCommonFriends(persons)
 
     # Remove the list of friends in each person so that only Name, Age, Address and Phone are displayed
@@ -114,6 +124,11 @@ def getPersons(names):
 
 
 def getCommonFriends(persons):
+    """
+    Find the common friends who are still alive and have brown eyes.
+    :param persons: List of names
+    :return: Array of dict objects for each common friend (name, age, address, phone)
+    """
     cf = []  # Empty list to hold the common friends
     p1f = persons[0]['friends']  # List of friends for person 1
     p2f = persons[1]['friends']  # List of friends for person 2
@@ -144,38 +159,78 @@ def getCommonFriends(persons):
 
 @app.route("/favouriteFoods/<name>", methods=["GET"])
 def getFavouriteFoods(name):
-    fruits = ["apple", "banana", "orange", "strawberry"]
-    vegetables = ["beetroot", "carrot", "celery", "cucumber"]
+    """
+    Given a name, return the details (username, age) and the favourite fruits and vegetables.
+        There are only 4 fruits and 4 vegetables in 'people.json'.
+        This code will not work properly if 'people.json' lists other fruits or vegetables
+    :param name: name of person. Spaces changed to %20
+    :return: JSON object of person's details plus favourite fruits and vegetables.
+    """
     person_details = {}
-    fav_fruits = []
-    fav_vegis = []
     for j in range(len(people_dict)):
         if people_dict[j]['name'] == name:
             person_details['username'] = people_dict[j]['name']
             person_details['age'] = people_dict[j]['age']
             favouriteFood = people_dict[j]['favouriteFood']
-
-            # There are only 4 fruits and 4 vegetables as in the arrays above.
-            # This code will not work if 'peoples.json' lists other fruits or vegetables
-            for i in range(len(favouriteFood)):
-                if favouriteFood[i] in fruits:
-                    fav_fruits.append(favouriteFood[i])
-                if favouriteFood[i] in vegetables:
-                    fav_vegis.append(favouriteFood[i])
+            fav_fruits = getFruits(favouriteFood)
+            fav_vegis = getVegetables(favouriteFood)
             person_details['fruits'] = fav_fruits
             person_details['vegetables'] = fav_vegis
             break
+
+    person_details = checkDetails(name, person_details)
+    return person_details
+
+
+def getFruits(favouriteFood):
+    """
+    Find the items in 'favouriteFood' belonging to the fruits list.
+    :param favouriteFood: List of items
+    :return: fav_fruits: List of items
+    """
+    fruits = ["apple", "banana", "orange", "strawberry"]
+    fav_fruits = []
+    for i in range(len(favouriteFood)):
+        if favouriteFood[i] in fruits:
+            fav_fruits.append(favouriteFood[i])
+    return fav_fruits
+
+
+def getVegetables(favouriteFood):
+    """
+    Find the items in 'favouriteFood' belonging to the vegetables list.
+    :param favouriteFood: List of items
+    :return: fav_vegis: List of items
+    """
+    vegetables = ["beetroot", "carrot", "celery", "cucumber"]
+    fav_vegis = []
+    for i in range(len(favouriteFood)):
+        if favouriteFood[i] in vegetables:
+            fav_vegis.append(favouriteFood[i])
+    return fav_vegis
+
+
+def checkDetails(name, person_details):
+    """
+    Check whether the name exists and the person has any favourite fruit and/or vegetables
+    Send as 'fruits: Not Found' if the person has no key for 'favouriteFood' or it has no fruits.
+    Send as 'vegetables: Not Found' if the person has no key for 'favouriteFood' or it has no vegetabless.
+    Send as 'name: Not Found if name is misspelled or missing
+    :param name: Name of the person.
+    :param person_details: Dict object.
+    :return: Send altered dict object
+    """
     # If the person is not found, say 'Not Found'
     keys = person_details.keys()
     try:
         if len(person_details.keys()) == 0:
             person_details[name] = "Not Found"
-        if 'fruits' not in keys:
+        elif 'fruits' not in keys:
             person_details['fruits'] = "Not Found"
-        if 'vegetables' not in keys:
+        elif 'vegetables' not in keys:
             person_details['vegetables'] = "Not Found"
-    except Exception as e:
-        print("Error:", e)
+    except Exception as err:
+        print("Error:", err)
     return person_details
 
 
