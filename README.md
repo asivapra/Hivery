@@ -15,6 +15,7 @@ If not, make a change in the code as below.
 ### Steps to install and run the API
 -   Copy these files into the same directory
     -   paranuara.py
+    -   test_paranuara.py
     -   companies.json
     -   people.json   
 - Check Python version
@@ -34,13 +35,23 @@ If not, make a change in the code as below.
 ### Call the API to get outputs
 - Get all employees in a specified company
     - curl http://127.0.0.1:8080/companyName/LINGOAGE
+    - output: *["Sue Tyson","Hobbs Lang","Shelly Koch","Santiago Baker","Lolita Walls","Shari Farrell","Gordon Wolfe"]*
+- Get all employees in a non-existing company
+    - curl http://127.0.0.1:8080/companyName/LINGOAGE_NOTEXIST
+    - output: *"Company is not found"*
+- Get all employees in a company that has no employees
+    - curl http://127.0.0.1:8080/companyName/BOVIS
+    - output: *"Company has no employees"*
+    - Note: To do this test, the 'people.json' file had to be changed to replace all occurrences of '"company_id": 13' (index of BOVIS) to '"company_id": 130' 
 - Find common friends between two people
     - curl http://127.0.0.1:8080/persons/Lila%20Gray,Elinor%20Wiggins
-        - Note: Comma separated names. Spaces in names must be encoded as %20    
+        - Note: Comma separated names. Spaces in names must be encoded as %20  
+    - output: *[{"address":"477 Amersfort Place, Rivera, Nebraska, 2569","age":21,"name":"Lila Gray","phone":"+1 (883) 414-3615"},{"address":"625 Oxford Street, Rosedale, Palau, 6678","age":41,"name":"Elinor Wiggins","phone":"+1 (906) 541-3699"},{"common_friends":[[{"name":"Decker Mckenzie"},{"age":60},{"address":"492 Stockton Street, Lawrence, Guam, 4854"},{"phone":"+1 (893) 587-3311"}],[{"name":"Mindy Beasley"},{"age":62},{"address":"628 Brevoort Place, Bellamy, Kansas, 2696"},{"phone":"+1 (862) 503-2197"}]]}]*  
 - Find favourite foods of a specified person
     - curl http://127.0.0.1:8080/favouriteFoods/Booth%20Haynes
+    - output: *{"age":46,"fruits":["apple","strawberry"],"username":"Booth Haynes","vegetables":["cucumber","carrot"]}*
 #    
-# Project specifications
+# Original Project specifications
         
 Paranuara is a class-m planet. Those types of planets can support human life, for that reason the president of the Checktoporov decides to send some people to colonise this new planet and
 reduce the number of people in their own country. After 10 years, the new president wants to know how the new colony is growing, and wants some information about his citizens. Hence he hired you to build a rest API to provide the desired information.
