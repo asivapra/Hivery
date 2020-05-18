@@ -21,7 +21,7 @@ class MyTestCase(unittest.TestCase):
         stream = os.popen('curl -s http://127.0.0.1:8080/companyName/LINGOAGE')
         output = stream.read()
         stream.close()
-        print("Test1: Employees in company, LINGOAGE:", output)
+        # print("Test1: Employees in company, LINGOAGE:", output)
         exp_output = '["Sue Tyson","Hobbs Lang","Shelly Koch","Santiago Baker",' \
                      '"Lolita Walls","Shari Farrell","Gordon Wolfe"]\n'
         self.assertEqual(output, exp_output)
@@ -34,7 +34,7 @@ class MyTestCase(unittest.TestCase):
         stream = os.popen('curl -s http://127.0.0.1:8080/companyName/LINGOAGE_NOTEXIST')
         output = stream.read()
         stream.close()
-        print("Test2: Non-existing company, LINGOAGE_NOTEXIST:", output)
+        # print("Test2: Non-existing company, LINGOAGE_NOTEXIST:", output)
         exp_output = '\"Company is not found\"\n'
         self.assertEqual(output, exp_output)
 
@@ -48,7 +48,7 @@ class MyTestCase(unittest.TestCase):
         stream.close()
         exp_output = '\"Company has no employees\"\n'
         self.assertEqual(output, exp_output)
-        print("Test3: No employees in company, BOVIS:", output)
+        # print("Test3: No employees in company, BOVIS:", output)
 
     def test_persons(self):
         """
@@ -58,7 +58,7 @@ class MyTestCase(unittest.TestCase):
         stream = os.popen('curl -s http://127.0.0.1:8080/persons/Lila%20Gray,Elinor%20Wiggins')
         output = stream.read()
         stream.close()
-        print("Test4: Common friends between two persons, Lila Gray and Elinor Wiggins:", output)
+        # print("Test4: Common friends between two persons, Lila Gray and Elinor Wiggins:", output)
         exp_output = '[{"address":"477 Amersfort Place, Rivera, Nebraska, 2569",' \
                      '"age":21,"name":"Lila Gray","phone":"+1 (883) 414-3615"},' \
                      '{"address":"625 Oxford Street, Rosedale, Palau, 6678",' \
@@ -78,7 +78,7 @@ class MyTestCase(unittest.TestCase):
         stream = os.popen('curl -s http://127.0.0.1:8080/persons/Lila%20Gray')
         output = stream.read()
         stream.close()
-        print("Test5: Sending only one person, Lila Gray:", output)
+        # print("Test5: Sending only one person, Lila Gray:", output)
         exp_output = 'Error: Exactly two names must be given.\n'
         self.assertEqual(output, exp_output)
 
@@ -90,7 +90,7 @@ class MyTestCase(unittest.TestCase):
         stream = os.popen('curl -s http://127.0.0.1:8080/persons/Lila%20Gray,Elinor%20WigginsBlah')
         output = stream.read()
         stream.close()
-        print("Test6: One person is missing:", output)
+        # print("Test6: One person is missing:", output)
         exp_output = 'Error: One/nil person was found.\n'
         self.assertEqual(output, exp_output)
 
@@ -102,9 +102,21 @@ class MyTestCase(unittest.TestCase):
         stream = os.popen('curl -s http://127.0.0.1:8080/favouriteFoods/Booth%20Haynes')
         output = stream.read()
         stream.close()
-        print("Test7: Favourite fruits and vegetables of a person, Booth Haynes:", output)
+        # print("Test7: Favourite fruits and vegetables of a person, Booth Haynes:", output)
         exp_output = '{"age":46,"fruits":["apple","strawberry"],"username":"Booth Haynes",' \
                      '"vegetables":["cucumber","carrot"]}\n'
+        self.assertEqual(output, exp_output)
+
+    def test_nofavouriteFoods(self):
+        """
+        List the favourite fruits of one person as (username, age, fruits, vegetables)
+        :return: Details as a JSON object of one person and their favourite fruits and vegetables
+        """
+        stream = os.popen('curl -s http://127.0.0.1:8080/favouriteFoods/Day%20Carr')
+        output = stream.read()
+        stream.close()
+        # print("Test8: No favourite food for a person, Day Carr:", output)
+        exp_output = '{"age":45,"fruits":"Not Found","username":"Day Carr","vegetables":"Not Found"}\n'
         self.assertEqual(output, exp_output)
 
     def test_favouriteFoodsNouser(self):
@@ -115,7 +127,7 @@ class MyTestCase(unittest.TestCase):
         stream = os.popen('curl -s http://127.0.0.1:8080/favouriteFoods/Booth%20HaynesBlah')
         output = stream.read()
         stream.close()
-        print("Test8: Favourite fruits and vegetables of a person, Booth Haynes:", output)
+        # print("Test9: Favourite fruits and vegetables of a person, Booth Haynes:", output)
         exp_output = '{"Booth HaynesBlah":"Not Found"}\n'
         self.assertEqual(output, exp_output)
 

@@ -177,7 +177,6 @@ def getFavouriteFoods(name):
             person_details['fruits'] = fav_fruits
             person_details['vegetables'] = fav_vegis
             break
-
     person_details = checkDetails(name, person_details)
     return person_details
 
@@ -225,10 +224,11 @@ def checkDetails(name, person_details):
     try:
         if len(person_details.keys()) == 0:
             person_details[name] = "Not Found"
-        elif 'fruits' not in keys:
-            person_details['fruits'] = "Not Found"
-        elif 'vegetables' not in keys:
-            person_details['vegetables'] = "Not Found"
+        else:
+            if len(person_details['fruits']) == 0:
+                person_details['fruits'] = "Not Found"
+            if len(person_details['vegetables']) == 0:
+                person_details['vegetables'] = "Not Found"
     except Exception as err:
         print("Error:", err)
     return person_details
